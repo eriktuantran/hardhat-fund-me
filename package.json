@@ -1,5 +1,6 @@
 {
   "name": "hardhat-fund-me",
+  "license": "MIT",
   "devDependencies": {
     "@chainlink/contracts": "^0.6.0",
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.0",
