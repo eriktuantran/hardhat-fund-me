@@ -93,6 +93,40 @@ describe("FundMe", async () => {
                 endingDeployerBalance.add(gasCost).toString()
             )
         })
+
+        it("Cheaper withdraw eth from a single founder", async () => {
+            const startingFundmeBalance = await fundMe.provider.getBalance(
+                fundMe.address
+            )
+
+            const startingDeployerBalance = await fundMe.provider.getBalance(
+                deployer
+            )
+            console.log(
+                `startingFundmeBalance  , ${startingFundmeBalance.toString()} \nstartingDeployerBalance, ${startingDeployerBalance.toString()}`
+            )
+
+            const transactionResponse = await fundMe.cheaperWithdraw()
+            const transactionReceipt = await transactionResponse.wait()
+
+            const { gasUsed, effectiveGasPrice } = transactionReceipt
+            const gasCost = gasUsed.mul(effectiveGasPrice)
+
+            const endingFundmeBalance = await fundMe.provider.getBalance(
+                fundMe.address
+            )
+
+            const endingDeployerBalance = await fundMe.provider.getBalance(
+                deployer
+            )
+
+            assert.equal(endingFundmeBalance.toString(), 0)
+            assert.equal(
+                startingFundmeBalance.add(startingDeployerBalance).toString(),
+                endingDeployerBalance.add(gasCost).toString()
+            )
+        })
+
         it("Allow owner to withdraw eth from multiple funder", async () => {
             const accounts = await ethers.getSigners()
             for (i = 1; i < 10; i++) {
