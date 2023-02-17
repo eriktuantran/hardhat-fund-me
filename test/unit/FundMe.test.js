@@ -32,9 +32,9 @@ describe("FundMe", async () => {
     })
     describe("fund", async () => {
         it("Fail if the amount is less than 50", async () => {
-            await expect(fundMe.fund({ value: 10 })).to.be.revertedWith(
-                "You need to spend more ETH!"
-            )
+            await expect(
+                fundMe.fund({ value: 10 })
+            ).to.be.revertedWithCustomError(fundMe, "FundMe__NotEnoughFund")
         })
         it("Success if the amount is more than 50", async () => {
             await fundMe.fund({ value: sendValue })
