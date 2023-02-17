@@ -19,7 +19,7 @@ describe("FundMe", async () => {
     describe("constructor", async () => {
         it("set the agregator address correctly", async () => {
             console.log("mockV3Aggregator.address", mockV3Aggregator.address)
-            response = await fundMe.s_priceFeed()
+            response = await fundMe.getPriceFeed()
             console.log("response", response)
             assert.equal(response, mockV3Aggregator.address)
         })
@@ -51,7 +51,7 @@ describe("FundMe", async () => {
     })
     describe("Get pricefeed version", async () => {
         it("Get the pricefeed version", async () => {
-            const priceFeed = await fundMe.s_priceFeed()
+            const priceFeed = await fundMe.getPriceFeed()
             const version = await fundMe.getVersion()
             assert.equal(version.toString(), "0")
         })
