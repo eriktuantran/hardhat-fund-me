@@ -139,11 +139,12 @@ describe("FundMe", async () => {
         })
         it("Allow only owner to withdraw eth", async () => {
             const accounts = await ethers.getSigners()
-            const attacker = accounts[1]
-            const attackerContract = await fundMe.connect(attacker)
-            await expect(attackerContract.withdraw()).to.be.revertedWith(
-                "FundMe__NotOwner"
-            )
+            const attackerContract = await fundMe.connect(accounts[1])
+            //const testtrx = await attackerContract.withdraw()
+
+            await expect(
+                attackerContract.withdraw()
+            ).to.be.revertedWithCustomError(fundMe, "FundMe__NotOwner")
 
             // const accounts = await ethers.getSigners()
             // const fundMeConnectedContract = await fundMe.connect(accounts[1])
