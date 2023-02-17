@@ -22,7 +22,7 @@ contract FundMe {
     address private immutable i_owner;
     address[] private s_funders;
     mapping(address => uint256) private s_addressToAmountFunded;
-    AggregatorV3Interface public priceFeed;
+    AggregatorV3Interface public s_priceFeed;
 
     // Events (we have none!)
 
@@ -44,14 +44,14 @@ contract FundMe {
     //// view / pure
 
     constructor(address priceFeedAddress) {
-        priceFeed = AggregatorV3Interface(priceFeedAddress);
+        s_priceFeed = AggregatorV3Interface(priceFeedAddress);
         i_owner = msg.sender;
     }
 
     /// @notice Funds our contract based on the ETH/USD price
     function fund() public payable {
         require(
-            msg.value.getConversionRate(priceFeed) >= MINIMUM_USD,
+            msg.value.getConversionRate(s_priceFeed) >= MINIMUM_USD,
             "You need to spend more ETH!"
         );
         // require(PriceConverter.getConversionRate(msg.value) >= MINIMUM_USD, "You need to spend more ETH!");
@@ -103,7 +103,7 @@ contract FundMe {
     }
 
     function getVersion() public view returns (uint256) {
-        return priceFeed.version();
+        return s_priceFeed.version();
     }
 
     function getFunder(uint256 index) public view returns (address) {
